@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding:utf-8 -*-
 from models.CNN_1d import CNN as cnn_1d
 from models.CNN_2d import CNN as cnn_2d
 from models.LeNet1d import LeNet as lenet_1d

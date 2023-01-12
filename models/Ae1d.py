@@ -45,17 +45,17 @@ class encoder(nn.Module):
         global inputflag
         if x.shape[2] == 512:
             inputflag = 0
-            out = x.view(x.size(0), -1)
-            out = self.fc1(out)
+            out = x.view(x.size(0), -1)  # batch_size * 512
+            out = self.fc1(out)  # batch_size * 1024
         else:
             inputflag = 1
-            out = x.view(x.size(0), -1)
+            out = x.view(x.size(0), -1)  # batch_size * 1024
         out = self.fc2(out)
         out = self.fc3(out)
         out = self.fc4(out)
         out = self.fc5(out)
         out = self.fc6(out)
-        out = self.fc7(out)
+        out = self.fc7(out)  # batch_size * 64
         return out
 
 

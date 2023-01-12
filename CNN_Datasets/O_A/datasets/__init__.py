@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding:utf-8 -*-
-
 from CNN_Datasets.O_A.datasets.CWRU import CWRU
 from CNN_Datasets.O_A.datasets.CWRUFFT import CWRUFFT
 from CNN_Datasets.O_A.datasets.CWRUCWT import CWRUCWT

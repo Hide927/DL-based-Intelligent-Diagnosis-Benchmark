@@ -6,9 +6,7 @@ from datasets.SequenceDatasets import dataset
 from datasets.sequence_aug import *
 from tqdm import tqdm
 
-
 signal_size = 1024
-
 
 datasetname = ["12k Drive End Bearing Fault Data", "12k Fan End Bearing Fault Data", "48k Drive End Bearing Fault Data",
                "Normal Baseline Data"]
@@ -56,12 +54,13 @@ def get_files(root, test=False):
     data_root1 = os.path.join('/tmp', root, datasetname[3])
     data_root2 = os.path.join('/tmp', root, datasetname[0])
 
-    path1 = os.path.join('/tmp', data_root1, normalname[0])  # 0->1797rpm ;1->1772rpm;2->1750rpm;3->1730rpm
-    data, lab = data_load(path1, axisname=normalname[0],label=0)  # nThe label for normal data is 0
+    # 0->1797rpm ;1->1772rpm;2->1750rpm;3->1730rpm
+    path1 = os.path.join('/tmp', data_root1, normalname[0])
+    # The label for normal data is 0
+    data, lab = data_load(path1, axisname=normalname[0], label=0)
 
     for i in tqdm(range(len(dataname1))):
         path2 = os.path.join('/tmp', data_root2, dataname1[i])
-
         data1, lab1 = data_load(path2, dataname1[i], label=label[i])
         data += data1
         lab += lab1
@@ -102,7 +101,6 @@ def data_transforms(dataset_type="train", normlize_type="-1-1"):
             RandomStretch(),
             RandomCrop(),
             Retype()
-
         ]),
         'val': Compose([
             Reshape(),
@@ -112,20 +110,24 @@ def data_transforms(dataset_type="train", normlize_type="-1-1"):
     }
     return transforms[dataset_type]
 
+
 def train_test_split_order(data_pd, test_size=0.8, num_classes=10):
     train_pd = pd.DataFrame(columns=('data', 'label'))
     val_pd = pd.DataFrame(columns=('data', 'label'))
     for i in range(num_classes):
         data_pd_tmp = data_pd[data_pd['label'] == i].reset_index(drop=True)
-        train_pd = train_pd.append(data_pd_tmp.loc[:int((1-test_size)*data_pd_tmp.shape[0]), ['data', 'label']], ignore_index=True)
-        val_pd = val_pd.append(data_pd_tmp.loc[int((1-test_size)*data_pd_tmp.shape[0]):, ['data', 'label']], ignore_index=True)
-    return train_pd,val_pd
+        train_pd = train_pd.append(data_pd_tmp.loc[:int(
+            (1-test_size)*data_pd_tmp.shape[0]), ['data', 'label']], ignore_index=True)
+        val_pd = val_pd.append(data_pd_tmp.loc[int(
+            (1-test_size)*data_pd_tmp.shape[0]):, ['data', 'label']], ignore_index=True)
+    return train_pd, val_pd
+
 
 class CWRU(object):
     num_classes = 10
     inputchannel = 1
 
-    def __init__(self, data_dir,normlizetype):
+    def __init__(self, data_dir, normlizetype):
         self.data_dir = data_dir
         self.normlizetype = normlizetype
 
@@ -133,11 +135,16 @@ class CWRU(object):
 
         list_data = get_files(self.data_dir, test)
         if test:
-            test_dataset = dataset(list_data=list_data, test=True, transform=None)
+            test_dataset = dataset(list_data=list_data,
+                                   test=True, transform=None)
             return test_dataset
         else:
-            data_pd = pd.DataFrame({"data": list_data[0], "label": list_data[1]})
-            train_pd, val_pd = train_test_split_order(data_pd, test_size=0.2, num_classes= 10)
-            train_dataset = dataset(list_data=train_pd, transform=data_transforms('train',self.normlizetype))
-            val_dataset = dataset(list_data=val_pd, transform=data_transforms('val',self.normlizetype))
+            data_pd = pd.DataFrame(
+                {"data": list_data[0], "label": list_data[1]})
+            train_pd, val_pd = train_test_split_order(
+                data_pd, test_size=0.2, num_classes=10)
+            train_dataset = dataset(
+                list_data=train_pd, transform=data_transforms('train', self.normlizetype))
+            val_dataset = dataset(
+                list_data=val_pd, transform=data_transforms('val', self.normlizetype))
             return train_dataset, val_dataset

@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding:utf-8 -*-
-
 import logging
 import os
 import time
@@ -25,7 +22,8 @@ def SAEloss(recon_x, x, z):
     pmean = 0.5
     p = F.sigmoid(z)
     p = torch.mean(p, 1)
-    KLD = pmean * torch.log(pmean / p) + (1 - pmean) * torch.log((1 - pmean) / (1 - p))
+    KLD = pmean * torch.log(pmean / p) + (1 - pmean) * \
+        torch.log((1 - pmean) / (1 - p))
     KLD = torch.sum(KLD, 0)
     return BCE + KLD
 
@@ -55,7 +53,6 @@ class train_utils(object):
             self.device_count = 1
             logging.info('using {} cpu'.format(self.device_count))
 
-
         # Load the datasets
         if args.processing_type == 'O_A':
             from AE_Datasets.O_A import datasets
@@ -69,24 +66,25 @@ class train_utils(object):
         else:
             raise Exception("processing type not implement")
 
-
         self.datasets = {}
-
-        self.datasets['train'], self.datasets['val'] = Dataset(args.data_dir, args.normlizetype).data_preprare()
+        self.datasets['train'], self.datasets['val'] = Dataset(
+            args.data_dir, args.normlizetype).data_preprare()
 
         self.dataloaders = {x: torch.utils.data.DataLoader(self.datasets[x], batch_size=args.batch_size,
-                                                           shuffle=(True if x == 'train' else False),
+                                                           shuffle=(
+                                                               True if x == 'train' else False),
                                                            num_workers=args.num_workers,
                                                            pin_memory=(True if self.device == 'cuda' else False))
                             for x in ['train', 'val']}
-        # Define the model
-        fmodel=getattr(models, args.model_name)
-        self.encoder = getattr(fmodel, 'encoder')(in_channel=Dataset.inputchannel, out_channel=Dataset.num_classes)
 
-        self.decoder = getattr(fmodel, 'decoder')(in_channel=Dataset.inputchannel,
-                                                                   out_channel=Dataset.num_classes)
-        self.classifier = getattr(fmodel, 'classifier')(in_channel=Dataset.inputchannel,
-                                                                   out_channel=Dataset.num_classes)
+        # Define the model
+        fmodel = getattr(models, args.model_name)
+        self.encoder = getattr(fmodel, 'encoder')(
+            in_channel=Dataset.inputchannel, out_channel=Dataset.num_classes)
+        self.decoder = getattr(fmodel, 'decoder')(
+            in_channel=Dataset.inputchannel, out_channel=Dataset.num_classes)
+        self.classifier = getattr(fmodel, 'classifier')(
+            in_channel=Dataset.inputchannel, out_channel=Dataset.num_classes)
 
         # Define the optimizer
         if args.opt == 'sgd':
@@ -101,12 +99,15 @@ class train_utils(object):
         # Define the learning rate decay
         if args.lr_scheduler == 'step':
             steps = [int(step) for step in args.steps.split(',')]
-            self.lr_scheduler = optim.lr_scheduler.MultiStepLR(self.optimizer, steps, gamma=args.gamma)
+            self.lr_scheduler = optim.lr_scheduler.MultiStepLR(
+                self.optimizer, steps, gamma=args.gamma)
         elif args.lr_scheduler == 'exp':
-            self.lr_scheduler = optim.lr_scheduler.ExponentialLR(self.optimizer, args.gamma)
+            self.lr_scheduler = optim.lr_scheduler.ExponentialLR(
+                self.optimizer, args.gamma)
         elif args.lr_scheduler == 'stepLR':
             steps = int(args.steps)
-            self.lr_scheduler = optim.lr_scheduler.StepLR(self.optimizer, steps, args.gamma)
+            self.lr_scheduler = optim.lr_scheduler.StepLR(
+                self.optimizer, steps, args.gamma)
         elif args.lr_scheduler == 'fix':
             self.lr_scheduler = None
         else:
@@ -125,12 +126,15 @@ class train_utils(object):
         # Define the learning rate decay
         if args.lr_scheduler == 'step':
             steps1 = [int(step) for step in args.steps1.split(',')]
-            self.lr_scheduler1 = optim.lr_scheduler.MultiStepLR(self.optimizer1, steps1, gamma=args.gamma)
+            self.lr_scheduler1 = optim.lr_scheduler.MultiStepLR(
+                self.optimizer1, steps1, gamma=args.gamma)
         elif args.lr_scheduler == 'exp':
-            self.lr_scheduler1 = optim.lr_scheduler.ExponentialLR(self.optimizer1, args.gamma)
+            self.lr_scheduler1 = optim.lr_scheduler.ExponentialLR(
+                self.optimizer1, args.gamma)
         elif args.lr_scheduler == 'stepLR':
             steps1 = int(args.steps1)
-            self.lr_scheduler1 = optim.lr_scheduler.StepLR(self.optimizer1, steps1, args.gamma)
+            self.lr_scheduler1 = optim.lr_scheduler.StepLR(
+                self.optimizer1, steps1, args.gamma)
         elif args.lr_scheduler == 'fix':
             self.lr_scheduler1 = None
         else:
@@ -139,12 +143,10 @@ class train_utils(object):
         self.start_epoch = 0
         # Invert the model and define the loss
         self.encoder.to(self.device)
-        self.encoder.to(self.device)
         self.decoder.to(self.device)
         self.classifier.to(self.device)
         self.criterion = nn.CrossEntropyLoss()
         self.criterion1 = nn.MSELoss()
-
 
     def train(self):
         """
@@ -153,27 +155,30 @@ class train_utils(object):
         """
         args = self.args
 
-        step = 0
+        step = 0  # 迭代更新的次数
         best_acc = 0.0
         batch_count = 0
         batch_loss = 0.0
         batch_acc = 0
         step_start = time.time()
 
-        traing_acc = []
+        training_acc = []
         testing_acc = []
 
-        traing_loss = []
+        training_loss = []
         testing_loss = []
 
         print("Training Autoencoder with minimum loss")
         for epoch in range(args.middle_epoch):
 
-            logging.info('-'*5 + 'Epoch {}/{}'.format(epoch, args.middle_epoch - 1) + '-'*5)
+            logging.info('-'*5 + 'Epoch {}/{}'.format(epoch,
+                         args.middle_epoch - 1) + '-'*5)
+
             # Update the learning rate
             if self.lr_scheduler is not None:
                 # self.lr_scheduler.step(epoch)
-                logging.info('current lr: {}'.format(self.lr_scheduler.get_lr()))
+                logging.info('current lr: {}'.format(
+                    self.lr_scheduler.get_lr()))
             else:
                 logging.info('current lr: {}'.format(args.lr))
 
@@ -196,7 +201,8 @@ class train_utils(object):
 
                     # Do the learning process, in val, we do not care about the gradient for relaxing
                     with torch.set_grad_enabled(phase == 'train'):
-                    #forward
+
+                        # forward
                         if args.model_name in ["Vae1d", "Vae2d"]:
                             mu, logvar = self.encoder(inputs)
                             recx = self.decoder(mu, logvar)
@@ -232,17 +238,19 @@ class train_utils(object):
                                 batch_time = train_time / args.print_step if step != 0 else train_time
                                 sample_per_sec = 1.0*batch_count/train_time
                                 logging.info('Epoch: {} [{}/{}], Train Loss: {:.4f}'
-                                             '{:.1f} examples/sec {:.2f} sec/batch'.format(
-                                    epoch, batch_idx*len(inputs), len(self.dataloaders[phase].dataset),
-                                    batch_loss, sample_per_sec, batch_time
-                                ))
+                                             '{:.1f} samples/sec {:.2f} sec/batch'.format(
+                                                 epoch,
+                                                 batch_idx * len(inputs),
+                                                 len(self.dataloaders[phase].dataset),
+                                                 batch_loss, sample_per_sec, batch_time
+                                             ))
                                 batch_loss = 0.0
                                 batch_count = 0
                             step += 1
 
-
                 # Print the train and val information via each epoch
                 epoch_loss = epoch_loss / len(self.dataloaders[phase].dataset)
+
                 logging.info('Epoch: {} {}-Loss: {:.4f}, Cost {:.4f} sec'.format(
                     epoch, phase, epoch_loss, time.time()-epoch_start
                 ))
@@ -251,11 +259,15 @@ class train_utils(object):
                 self.lr_scheduler.step()
 
         for epoch1 in range(self.start_epoch, args.max_epoch):
-            logging.info('-' * 5 + 'Epoch {}/{}'.format(epoch1, args.max_epoch - 1) + '-' * 5)
+
+            logging.info('-' * 5 + 'Epoch {}/{}'.format(epoch1,
+                         args.max_epoch - 1) + '-' * 5)
+
             # Update the learning rate
             if self.lr_scheduler1 is not None:
                 # self.lr_scheduler1.step(epoch1)
-                logging.info('current lr: {}'.format(self.lr_scheduler1.get_lr()))
+                logging.info('current lr: {}'.format(
+                    self.lr_scheduler1.get_lr()))
             else:
                 logging.info('current lr: {}'.format(args.lr))
 
@@ -273,6 +285,7 @@ class train_utils(object):
                 else:
                     self.encoder.eval()
                     self.classifier.eval()
+
                 for batch_idx, (inputs, labels) in enumerate(self.dataloaders[phase]):
                     inputs = inputs.to(self.device)
                     labels = labels.to(self.device)
@@ -321,9 +334,11 @@ class train_utils(object):
                                 sample_per_sec = 1.0 * batch_count / train_time
                                 logging.info('Epoch: {} [{}/{}], Train Loss: {:.4f} Train Acc: {:.4f},'
                                              '{:.1f} examples/sec {:.2f} sec/batch'.format(
-                                    epoch1, batch_idx * len(inputs), len(self.dataloaders[phase].dataset),
-                                    batch_loss, batch_acc, sample_per_sec, batch_time
-                                ))
+                                                 epoch1,
+                                                 batch_idx * len(inputs),
+                                                 len(self.dataloaders[phase].dataset),
+                                                 batch_loss, batch_acc, sample_per_sec, batch_time
+                                             ))
                                 batch_acc = 0
                                 batch_loss = 0.0
                                 batch_count = 0
@@ -334,11 +349,12 @@ class train_utils(object):
                 epoch_acc = epoch_acc / len(self.dataloaders[phase].dataset)
 
                 if phase == "train":
-                    traing_acc.append(epoch_acc)
-                    traing_loss.append(epoch_loss)
+                    training_acc.append(epoch_acc)
+                    training_loss.append(epoch_loss)
                 else:
                     testing_acc.append(epoch_acc)
                     testing_loss.append(epoch_loss)
+
                 logging.info('Epoch: {} {}-Loss: {:.4f} {}-Acc: {:.4f}, Cost {:.4f} sec'.format(
                     epoch1, phase, epoch_loss, phase, epoch_acc, time.time() - epoch_start
                 ))
@@ -346,26 +362,15 @@ class train_utils(object):
                 # save the model
                 if phase == 'val':
                     # save the checkpoint for other learning
-                    model_state_dic = self.classifier.module.state_dict() if self.device_count > 1 else self.classifier.state_dict()
+                    model_state_dic = self.classifier.module.state_dict(
+                    ) if self.device_count > 1 else self.classifier.state_dict()
                     # save the best model according to the val accuracy
                     if epoch_acc > best_acc or epoch1 > args.max_epoch-2:
                         best_acc = epoch_acc
-                        logging.info("save best model epoch {}, acc {:.4f}".format(epoch1, epoch_acc))
+                        logging.info(
+                            "save best model epoch {}, acc {:.4f}".format(epoch1, epoch_acc))
                         torch.save(model_state_dic,
                                    os.path.join(self.save_dir, '{}-{:.4f}-best_model.pth'.format(epoch1, best_acc)))
 
-
             if self.lr_scheduler1 is not None:
                 self.lr_scheduler1.step()
-
-
-
-
-
-
-
-
-
-
-
-

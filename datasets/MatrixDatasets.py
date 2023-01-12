@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding:utf-8 -*-
-
 import torch
 from torch.utils.data import Dataset
 import os
@@ -8,6 +5,7 @@ from PIL import Image
 from torchvision import transforms
 import numpy as np
 from datasets.matrix_aug import *
+
 
 class dataset(Dataset):
 
@@ -26,7 +24,6 @@ class dataset(Dataset):
         else:
             self.transforms = transform
 
-
     def __len__(self):
         return len(self.seq_data)
 
@@ -40,4 +37,3 @@ class dataset(Dataset):
             label = self.labels[item]
             seq = self.transforms(seq)
             return seq, label
-

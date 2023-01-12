@@ -1,4 +1,3 @@
-
 import numpy as np
 import random
 from scipy.signal import resample
@@ -16,8 +15,8 @@ class Compose(object):
 
 class Reshape(object):
     def __call__(self, seq):
-        #print(seq.shape)
-        return seq.transpose()
+        # print(seq.shape)  # 1024 * 1
+        return seq.transpose()  # 1 * 1024
 
 
 class Retype(object):
@@ -49,7 +48,8 @@ class Scale(object):
         self.sigma = sigma
 
     def __call__(self, seq):
-        scale_factor = np.random.normal(loc=1, scale=self.sigma, size=(seq.shape[0], 1))
+        scale_factor = np.random.normal(
+            loc=1, scale=self.sigma, size=(seq.shape[0], 1))
         scale_matrix = np.matmul(scale_factor, np.ones((1, seq.shape[1])))
         return seq*scale_matrix
 
@@ -62,7 +62,8 @@ class RandomScale(object):
         if np.random.randint(2):
             return seq
         else:
-            scale_factor = np.random.normal(loc=1, scale=self.sigma, size=(seq.shape[0], 1))
+            scale_factor = np.random.normal(
+                loc=1, scale=self.sigma, size=(seq.shape[0], 1))
             scale_matrix = np.matmul(scale_factor, np.ones((1, seq.shape[1])))
             return seq*scale_matrix
 
@@ -106,15 +107,17 @@ class RandomCrop(object):
             seq[:, random_index:random_index+self.crop_len] = 0
             return seq
 
+
 class Normalize(object):
-    def __init__(self, type = "0-1"): # "0-1","1-1","mean-std"
+    def __init__(self, type="0-1"):  # "0-1","1-1","mean-std"
         self.type = type
+
     def __call__(self, seq):
-        if  self.type == "0-1":
+        if self.type == "0-1":
             seq = (seq-seq.min())/(seq.max()-seq.min())
-        elif  self.type == "1-1":
+        elif self.type == "1-1":
             seq = 2*(seq-seq.min())/(seq.max()-seq.min()) + -1
-        elif self.type == "mean-std" :
+        elif self.type == "mean-std":
             seq = (seq-seq.mean())/seq.std()
         else:
             raise NameError('This normalization is not included!')

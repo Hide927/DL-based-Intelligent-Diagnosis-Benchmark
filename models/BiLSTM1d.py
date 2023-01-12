@@ -25,15 +25,15 @@ class BiLSTM(nn.Module):
         self.hidden2label2 = nn.Linear(self.hidden_dim * 4, out_channel)
         self.bilstm = nn.LSTM(self.kernel_num*2, self.hidden_dim,
                               num_layers=self.num_layers, bidirectional=True,
-                              batch_first=True, bias=False)
+                              batch_first=True, bias=False)  # 参数为 input_size, hidden_size, num_layers
 
     def forward(self, x):
         x = self.embed1(x)
-        x = self.embed2(x)
+        x = self.embed2(x)  # batch_size * channel(通道维度) * self.V(时间维度)
         x = x.view(-1, self.kernel_num*2, self.V)
-        x = torch.transpose(x, 1, 2)
-        bilstm_out, _ = self.bilstm(x)
-        bilstm_out = torch.tanh(bilstm_out)
+        x = torch.transpose(x, 1, 2)  # batch_size * self.V(时间维度) * channel(通道维度)
+        bilstm_out, _ = self.bilstm(x)  # 输入为 batch_size * seq_len * input_size
+        bilstm_out = torch.tanh(bilstm_out)  # 输出为 batch_size * seq_len * hidden_size*2
         bilstm_out = bilstm_out.view(bilstm_out.size(0), -1)
         logit = self.hidden2label1(bilstm_out)
         logit = self.hidden2label2(logit)

@@ -8,7 +8,6 @@ from tqdm import tqdm
 
 signal_size = 1024
 
-
 datasetname = ["12k Drive End Bearing Fault Data", "12k Fan End Bearing Fault Data", "48k Drive End Bearing Fault Data",
                "Normal Baseline Data"]
 normalname = ["97.mat", "98.mat", "99.mat", "100.mat"]
@@ -44,7 +43,6 @@ label = [1, 2, 3, 4, 5, 6, 7, 8, 9]  # The failure data is labeled 1-9
 axis = ["_DE_time", "_FE_time", "_BA_time"]
 
 
-# generate Training Dataset and Testing Dataset
 def get_files(root, test=False):
     '''
     This function is used to generate the final training set and test set.
@@ -55,12 +53,13 @@ def get_files(root, test=False):
     data_root1 = os.path.join('/tmp', root, datasetname[3])
     data_root2 = os.path.join('/tmp', root, datasetname[0])
 
-    path1 = os.path.join('/tmp', data_root1, normalname[0])  # 0->1797rpm ;1->1772rpm;2->1750rpm;3->1730rpm
-    data, lab = data_load(path1, axisname=normalname[0],label=0)  # nThe label for normal data is 0
+    # 0->1797rpm ;1->1772rpm;2->1750rpm;3->1730rpm
+    path1 = os.path.join('/tmp', data_root1, normalname[0])
+    # nThe label for normal data is 0
+    data, lab = data_load(path1, axisname=normalname[0], label=0)
 
     for i in tqdm(range(len(dataname1))):
         path2 = os.path.join('/tmp', data_root2, dataname1[i])
-
         data1, lab1 = data_load(path2, dataname1[i], label=label[i])
         data += data1
         lab += lab1
@@ -101,7 +100,6 @@ def data_transforms(dataset_type="train", normlize_type="-1-1"):
             RandomStretch(),
             RandomCrop(),
             Retype()
-
         ]),
         'val': Compose([
             Reshape(),
@@ -111,23 +109,28 @@ def data_transforms(dataset_type="train", normlize_type="-1-1"):
     }
     return transforms[dataset_type]
 
+
 class CWRU(object):
     num_classes = 10
     inputchannel = 1
 
-    def __init__(self, data_dir,normlizetype):
+    def __init__(self, data_dir, normlizetype):
         self.data_dir = data_dir
         self.normlizetype = normlizetype
 
     def data_preprare(self, test=False):
-
         list_data = get_files(self.data_dir, test)
         if test:
-            test_dataset = dataset(list_data=list_data, test=True, transform=None)
+            test_dataset = dataset(list_data=list_data,
+                                   test=True, transform=None)
             return test_dataset
         else:
-            data_pd = pd.DataFrame({"data": list_data[0], "label": list_data[1]})
-            train_pd, val_pd = train_test_split(data_pd, test_size=0.20, random_state=40, stratify=data_pd["label"])
-            train_dataset = dataset(list_data=train_pd, transform=data_transforms('train',self.normlizetype))
-            val_dataset = dataset(list_data=val_pd, transform=data_transforms('val',self.normlizetype))
+            data_pd = pd.DataFrame(
+                {"data": list_data[0], "label": list_data[1]})
+            train_pd, val_pd = train_test_split(
+                data_pd, test_size=0.20, random_state=40, stratify=data_pd["label"])
+            train_dataset = dataset(
+                list_data=train_pd, transform=data_transforms('train', self.normlizetype))
+            val_dataset = dataset(
+                list_data=val_pd, transform=data_transforms('val', self.normlizetype))
             return train_dataset, val_dataset

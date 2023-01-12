@@ -3,6 +3,35 @@
   <component name="ChangeListManager">
     <list default="true" id="51c6b3cf-944c-419b-b7ab-5d5ee65ce5a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AE_Datasets/O_A/datasets/CWRU.py" beforeDir="false" afterPath="$PROJECT_DIR$/AE_Datasets/O_A/datasets/CWRU.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRU.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRU.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRUCWT.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRUCWT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRUFFT.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRUFFT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRUSTFT.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRUSTFT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRUSlice.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/CWRUSlice.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNU.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNU.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNUCWT.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNUCWT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNUFFT.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNUFFT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNUSTFT.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNUSTFT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNUSlice.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/JNUSlice.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/O_A/datasets/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/R_A/datasets/CWRU.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/R_A/datasets/CWRU.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/R_A/datasets/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/R_A/datasets/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/R_NA/datasets/CWRU.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/R_NA/datasets/CWRU.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CNN_Datasets/R_NA/datasets/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/CNN_Datasets/R_NA/datasets/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/MatrixDatasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/MatrixDatasets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/SequenceDatasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/SequenceDatasets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/matrix_aug.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/matrix_aug.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/sequence_aug.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/sequence_aug.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Ae1d.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Ae1d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/BiLSTM1d.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/BiLSTM1d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/CNN_1d.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/CNN_1d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train_ae.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_ae.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/train_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/train_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/train_utils_ae.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/train_utils_ae.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,17 +41,24 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="1YOENAdCBjmGJGEK4214dWGKp1l" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/Code/Python/DL-based-Intelligent-Diagnosis-Benchmark",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="ServiceViewManager">
     <option name="viewStates">
       <list>
@@ -35,6 +71,7 @@
       </list>
     </option>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -46,10 +83,22 @@
       <option name="presentableId" value="Default" />
       <updated>1582805197114</updated>
       <workItem from="1582805200576" duration="332000" />
+      <workItem from="1673499633542" duration="147000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
