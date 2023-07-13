@@ -44,7 +44,6 @@ class train_utils(object):
             Dataset = getattr(datasets, args.data_name)
         else:
             raise Exception("processing type not implement")
-
         print(Dataset)
 
         self.datasets = {}
@@ -193,8 +192,7 @@ class train_utils(object):
                 # save the model
                 if phase == 'val':
                     # save the checkpoint for other learning
-                    model_state_dic = self.model.module.state_dict(
-                    ) if self.device_count > 1 else self.model.state_dict()
+                    model_state_dic = self.model.module.state_dict() if self.device_count > 1 else self.model.state_dict()
                     # save the best model according to the val accuracy
                     if epoch_acc > best_acc or epoch > args.max_epoch-2:
                         best_acc = epoch_acc

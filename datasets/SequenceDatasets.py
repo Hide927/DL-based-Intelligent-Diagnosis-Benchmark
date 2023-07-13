@@ -8,7 +8,6 @@ from datasets.sequence_aug import *
 
 
 class dataset(Dataset):
-
     def __init__(self, list_data, test=False, transform=None):
         self.test = test
         if self.test:

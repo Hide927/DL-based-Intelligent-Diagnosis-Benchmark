@@ -15,8 +15,7 @@ class Compose(object):
 
 class Reshape(object):
     def __call__(self, seq):
-        # print(seq.shape)  # 1024 * 1
-        return seq.transpose()  # 1 * 1024
+        return seq.transpose()  # 1024 * 1 --> 1 * 1024
 
 
 class Retype(object):
@@ -121,5 +120,4 @@ class Normalize(object):
             seq = (seq-seq.mean())/seq.std()
         else:
             raise NameError('This normalization is not included!')
-
         return seq

@@ -110,5 +110,4 @@ class Normalize(object):
             seq = (seq-seq.mean())/seq.std()
         else:
             raise NameError('This normalization is not included!')
-
         return seq

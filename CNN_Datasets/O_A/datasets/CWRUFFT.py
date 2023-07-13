@@ -47,12 +47,6 @@ axis = ["_DE_time", "_FE_time", "_BA_time"]
 
 
 def get_files(root, test=False):
-    '''
-    This function is used to generate the final training set and test set.
-    root:The location of the data set
-    normalname:List of normal data
-    dataname:List of failure data
-    '''
     data_root1 = os.path.join('/tmp', root, datasetname[3])
     data_root2 = os.path.join('/tmp', root, datasetname[0])
 
@@ -66,16 +60,10 @@ def get_files(root, test=False):
         data1, lab1 = data_load(path2, dataname1[i], label=label[i])
         data += data1
         lab += lab1
-
     return [data, lab]
 
 
 def data_load(filename, axisname, label):
-    '''
-    This function is mainly used to generate test data and training data.
-    filename:Data location
-    axisname:Select which channel's data,---->"_DE_time","_FE_time","_BA_time"
-    '''
     datanumber = axisname.split(".")
     if eval(datanumber[0]) < 100:
         realaxis = "X0" + datanumber[0] + axis[0]
@@ -96,15 +84,14 @@ def data_load(filename, axisname, label):
         lab.append(label)
         start += signal_size
         end += signal_size
-
     return data, lab
 
 
-def data_transforms(dataset_type="train", normlize_type="-1-1"):
+def data_transforms(dataset_type="train", normalize_type="-1-1"):
     transforms = {
         'train': Compose([
             Reshape(),
-            Normalize(normlize_type),
+            Normalize(normalize_type),
             RandomAddGaussian(),
             RandomScale(),
             RandomStretch(),
@@ -114,7 +101,7 @@ def data_transforms(dataset_type="train", normlize_type="-1-1"):
         ]),
         'val': Compose([
             Reshape(),
-            Normalize(normlize_type),
+            Normalize(normalize_type),
             Retype()
         ])
     }
@@ -137,9 +124,9 @@ class CWRUFFT(object):
     num_classes = 10
     inputchannel = 1
 
-    def __init__(self, data_dir, normlizetype):
+    def __init__(self, data_dir, normalizetype):
         self.data_dir = data_dir
-        self.normlizetype = normlizetype
+        self.normalizetype = normalizetype
 
     def data_preprare(self, test=False):
         list_data = get_files(self.data_dir, test)
@@ -153,7 +140,7 @@ class CWRUFFT(object):
             train_pd, val_pd = train_test_split_order(
                 data_pd, test_size=0.2, num_classes=10)
             train_dataset = dataset(
-                list_data=train_pd, transform=data_transforms('train', self.normlizetype))
+                list_data=train_pd, transform=data_transforms('train', self.normalizetype))
             val_dataset = dataset(
-                list_data=val_pd, transform=data_transforms('val', self.normlizetype))
+                list_data=val_pd, transform=data_transforms('val', self.normalizetype))
             return train_dataset, val_dataset
